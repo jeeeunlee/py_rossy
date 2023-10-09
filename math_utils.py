@@ -35,6 +35,12 @@ def cross_product(a,b):
     return np.cross(a,b)
 
 ### SE(3) calculations
+def R_from_rxryrz(rx, ry, rz=[]):
+    if len(rz) < 3:
+        rz = np.cross(rx, ry)    
+    Rt = np.array([rx, ry, rz])
+    return np.transpose(Rt)
+
 def T_from_R_p(R,p):
     T = np.identity(4)
     T[0:3,0:3] = R
@@ -58,7 +64,15 @@ def AdT_from_T(T):
     AdT[0:3, 0:3] = R
     AdT[3:6, 3:6] = R
     AdT[3:6, 0:3] = np.matmul(skew(p), R)
-    return AdT
+    return AdT    
+
+def AdT_transpose_from_T(T):
+    AdTt = np.zeros((6,6))
+    R,p = R_p_from_T(T)
+    AdTt[0:3, 0:3] = np.transpose(R)
+    AdTt[3:6, 3:6] = np.transpose(R)
+    AdTt[0:3, 3:6] = np.matmul(skew(p), R)
+    return AdTt
 
 def skew(x):
     skew_x = np.array( [[0, -x[2], x[1]], [x[2], 0, -x[0]], [-x[1], x[0], 0]] )
