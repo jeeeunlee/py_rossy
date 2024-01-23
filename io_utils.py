@@ -29,6 +29,7 @@ def delete_and_create_folder(directory):
       print ('Error: Creating directory. ' +  directory)
       
 def savedata(inputdata, filename):
+    # input: float, int, list of list dict float int
     if type(inputdata) is float or type(inputdata) is int:
         filename = f"{filename}.txt"
         save_value(inputdata, filename)
